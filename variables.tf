@@ -6,6 +6,10 @@ variable "project" {
 variable "env" {
   type    = string
   default = "dev"
+  validation {
+    condition     = contains(["dev", "prod"], var.env)
+    error_message = "Environment must be either 'dev' or 'prod'."
+  }
 }
 
 variable "backend_github" {
@@ -52,7 +56,7 @@ variable "google_identity_provider" {
   })
 }
 
-variable "email" { type = string }
+variable "emails" { type = list(string) }
 
 variable "domain_prefix" {
   type        = string
