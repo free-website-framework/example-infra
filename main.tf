@@ -10,7 +10,6 @@ module "backend" {
   python_version      = var.backend_github.python_version
   list_of_actions     = var.list_of_actions
   list_of_time_values = var.list_of_time_values
-
 }
 
 
