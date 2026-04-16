@@ -90,11 +90,24 @@ resource "cloudflare_zero_trust_access_application" "this" {
 }
 
 # As described here: https://github.com/cloudflare/terraform-provider-cloudflare/issues/3099
-# creating a pages project won't automatically deploy it, so we need to trigger the deployment manually
-resource "terraform_data" "trigger_initial_deploy" {
+# creating or changing a pages project won't automatically deploy it, so we need to trigger the deployment manually
+resource "terraform_data" "trigger_pages_deployment" {
   triggers_replace = [
-    cloudflare_pages_project.this.id
+    sha1(jsonencode({
+      account_id            = var.account_id
+      name                  = var.domain_prefix
+      production_branch     = var.github_branch
+      owner                 = var.github_owner
+      repo_name             = var.github_repo
+      BACKEND_URL           = var.backend_url
+      AWS_ACCESS_KEY_ID     = var.backend_access_key.id
+      AWS_ACCESS_KEY_SECRET = sha1(var.backend_access_key.secret)
+      VITE_ACTIONS          = join(",", var.list_of_actions)
+      VITE_TIME_VALUES      = join(",", var.list_of_time_values)
+    })),
   ]
+
+  depends_on = [cloudflare_pages_project.this]
 
   provisioner "local-exec" {
     command = <<EOT
