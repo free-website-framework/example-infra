@@ -58,12 +58,11 @@ resource "aws_iam_role_policy" "dynamo" {
 }
 
 resource "aws_lambda_function" "this" {
+  depends_on    = [null_resource.bootstrap_dummy_image]
   function_name = "${var.project}-lambda"
   role          = aws_iam_role.this.arn
-  filename      = archive_file.package.output_path
-  code_sha256   = archive_file.package.output_base64sha256
-  handler       = var.mangun_handler_path
-  runtime       = "python${var.python_version}"
+  package_type  = "Image"
+  image_uri     = local.dummy_image_uri
   architectures = ["arm64"]
 
   environment {
@@ -80,6 +79,10 @@ resource "aws_lambda_function" "this" {
   # "Specified ReservedConcurrentExecutions for function decreases account's UnreservedConcurrentExecution below its minimum value of [10].""
   # it probably means you have a test account with 10 concurrent executions limit, but you can reserve up to the Unreserved account concurrency value minus 100
   # https://eu-central-1.console.aws.amazon.com/servicequotas/home/services/lambda/quotas
+
+  lifecycle {
+    ignore_changes = [image_uri]
+  }
 }
 
 

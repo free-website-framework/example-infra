@@ -8,8 +8,5 @@ variable "env" {
 }
 variable "github_owner" { type = string }
 variable "github_repo" { type = string }
-variable "github_branch" { type = string }
-variable "mangun_handler_path" { type = string }
-variable "python_version" { type = string }
 variable "list_of_actions" { type = list(string) }
 variable "list_of_time_values" { type = list(string) }

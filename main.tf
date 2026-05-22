@@ -5,9 +5,6 @@ module "backend" {
   env                 = var.env
   github_owner        = var.backend_github.owner
   github_repo         = var.backend_github.repo
-  github_branch       = var.backend_github.branch
-  mangun_handler_path = var.backend_github.mangun_handler_path
-  python_version      = var.backend_github.python_version
   list_of_actions     = var.list_of_actions
   list_of_time_values = var.list_of_time_values
 }
