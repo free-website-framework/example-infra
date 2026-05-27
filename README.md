@@ -25,9 +25,6 @@ env = "dev"
 backend_github = {
   owner               = "<put your owner here>"
   repo                = "<project>-backend"
-  branch              = "main"
-  python_version      = "3.14"
-  mangun_handler_path = "app.main.handler"
 }
 
 frontend_github = {
@@ -44,7 +41,10 @@ google_identity_provider = {
   client_id     = "xxx.apps.googleusercontent.com"
   client_secret = "xxx"
 }
-email = "xxx@gmail.com"
+emails = ["xxx@gmail.com"]
+
+list_of_actions = ["food", "medicine", "activity"]
+list_of_time_values = [0, 30, 60]
 ```
 
 
@@ -72,14 +72,6 @@ Service: lambda
 ```
 terraform destroy -var-file=$VAR_FILE
 ```
-
-
-# How to apply changes
-
-When you do any changes to either frontend or backend you must push them to github.
-Then if you only changed frontend, cloudflare will automatically see the changes and they will be applied.
-However if you want to apply changes to AWS lambda backend you have to run `terraform apply`.
-You don't have to change any tfvars as github change will be visible in terraform and the code will be updated. 
 
 
 # Common errors
